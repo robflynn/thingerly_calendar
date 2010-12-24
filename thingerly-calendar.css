@@ -73,6 +73,11 @@
 	color: #aaa;
 }
 
+.tc-today {
+	font-weight: bold;
+	color: #00f;
+}
+
 
 .tc-cf:after 
 {

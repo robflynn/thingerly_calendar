@@ -169,6 +169,8 @@
 
 	function renderDayView(cal, view, d)
 	{
+		var data = cal.data('thingerlyCalendar');
+
 		// Render the month header, this consists of listing days of the week
 		v_head = $('<div />');
 		v_head.addClass("tc-month-h tc-row-sm tc-cf");
@@ -240,6 +242,14 @@
 					dayDiv.addClass("tc-grey");
 					dayText = ++next_month_days;
 				}
+				else
+				{
+					if (dayText == data.now.getDate() && d.getYear() == data.now.getYear() && d.getMonth() == data.now.getMonth())
+					{
+						dayDiv.addClass("tc-today");
+					}
+				}
+
 
 				dayDiv.html(dayText);
 				weekDiv.append(dayDiv);
