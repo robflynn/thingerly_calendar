@@ -16,11 +16,14 @@
 	width: 210px;
 	height: 210px;
 	position: relative;
+	border: solid 5px #000;
+	border-radius: 5px;
 }
 
 .tc-header {
 	font-size: 90%;
 	text-align: center;
+	height: 20px;
 }
 
 .tc-header-l {
@@ -42,27 +45,48 @@
 	width: 100%;
 	position: absolute;
 	left: 0px;
-	top: 20px;
+	top: 26px;
 }
 
 .tc-row-sm {
 	height: 20px;
 	line-height: 20px;
 	vertical-align: middle;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
-.tc-row-sm.tc-odd {
+.tc-row-bg {
+	height: 55px;
+	line-height: 55px;
+	vertical-align: middle;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+
+.tc-row-sm.tc-odd,
+.tc-row-bg.tc-odd {
 	background: #eee;
 }
 
-.tc-row-sm.tc-even {
+.tc-row-sm.tc-even,
+.tc-row-bg.to-even {
 	background: #fff;
+}
+
+.tc-month-h {
+	padding-top: 3px;
 }
 
 .tc-cell {
 	float: left;
 	text-align: center;
 	width: 14.2%;
+}
+
+.tc-row-bg .tc-cell {
+	width: 25%;
 }
 
 .tc-day {

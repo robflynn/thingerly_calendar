@@ -5,6 +5,8 @@
   var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
                 'August', 'September', 'October', 'November', 'December'];
 
+	var months_abbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 
   // TODO: Maybe make these changable later
   var days_of_week = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
@@ -56,7 +58,7 @@
 						'view' : 'days',
 						'options' : options,
 						'now' : now,
-						'events' : options.events
+						'events' : options.events,
 					});
 
 					cdate = new Date(options.year, options.month, 1);
@@ -65,40 +67,84 @@
 
 					// Bind our buttons
 					jQuery(".tc-header-l", this).bind('click.thingerlyCalendar', function() {
-						data = $this.data('thingerlyCalendar');
-						var cm = data.options.month;
-						var cy = data.options.year;
+						var data = $this.data('thingerlyCalendar');
+						var cdate = getPageDate('prev', data);
 
-						var pm = cm == 0 ? 11 : cm - 1;
-						var py = pm == 11 ? cy - 1 : cy;
+						var new_view = getView($this, data.view, cdate);
 
-						var new_view = getView($this, 'days', new Date(py, pm, 1));
-
-						data.options.month = pm;
-						data.options.year = py;
+						data.options.month = cdate.getMonth();
+						data.options.year = cdate.getYear() + 1900;
 
 						showView($this, new_view);
 					});
 
 					jQuery(".tc-header-r", this).bind('click.thingerlyCalendar', function() {
-						data = $this.data('thingerlyCalendar');
-						var cm = data.options.month;
-						var cy = data.options.year;
+						var data = $this.data('thingerlyCalendar');
+						var cdate = getPageDate('next', data);
 
-						var nm = cm == 11 ? 0 : cm + 1;
-						var ny = nm == 0 ? cy + 1 : cy;
+						var new_view = getView($this, data.view, cdate);
 
-						var new_view = getView($this, 'days', new Date(ny, nm, 1));
-
-						data.options.month = nm;
-						data.options.year = ny;
+						data.options.month = cdate.getMonth();
+						data.options.year = cdate.getYear() + 1900;
 
 						showView($this, new_view);
+					});
+
+					jQuery(".tc-header-t", this).bind('click.thingerlyCalendar', function() {
+						var data = $this.data('thingerlyCalendar');
+
+						switch (data.view)
+						{
+							case 'days' : {
+								data.view = 'months';
+
+								view = getView($this, 'months', new Date(data.options.year, data.options.month, 1));
+
+								showView($this, view);
+
+								break;
+							}
+						}
 					});
 				}
 			});
 		}
 	};
+
+	function getPageDate(direction, data)
+	{
+		var cm = data.options.month;
+		var cy = data.options.year;
+
+		if (direction == 'prev')
+		{
+			if (data.view == 'days')
+			{
+				var pm = cm == 0 ? 11 : cm - 1;
+				var py = pm == 11 ? cy - 1 : cy;
+
+				return new Date(py, pm, 1);
+			}
+			else if (data.view == 'months')
+			{
+				return new Date(cy-1, cm, 1);
+			}
+		}
+		else if (direction = 'next')
+		{
+			if (data.view == 'days')
+			{
+				var nm = cm == 11 ? 0 : cm + 1;
+				var ny = nm == 0 ? cy + 1 : cy;
+
+				return new Date(ny, nm, 1);
+			}
+			else if (data.view == 'months')
+			{
+				return new Date(cy+1, cm, 1);
+			}
+		}
+	}
 
 	function showView(cal, view)
 	{
@@ -140,12 +186,13 @@
 	{
 		var data = cal.data('thingerlyCalendar');
 
-		repl.fadeTo(1, 0);
+		repl.fadeTo(1, 0, function() { 
+			data.calendar.append(repl);
+			orig.fadeTo(data.options.speed, 0);
 
-		data.calendar.append(repl);
-
-		repl.fadeTo(data.options.speed, 1.0, function() {
-			orig.remove();
+			repl.fadeTo(data.options.speed, 1.0, function() {
+				orig.remove();
+			});
 		});
 	}
 
@@ -160,6 +207,9 @@
 			case 'days': {
 				return renderDayView(cal, view, d);
 			}
+			case 'months': {
+				return renderMonthView(cal, view, d);
+			}
 			default: {
 				return renderDayView(cal, view, d);
 			}
@@ -169,6 +219,42 @@
 	function setCalendarTitle(cal, s)
 	{
 		jQuery('.tc-header-t', cal).html(s);
+	}
+
+	function renderMonthView(cal, view, d)
+	{
+		var data = cal.data('thingerlyCalendar');
+
+		count = 0;
+		for (row = 0; row < 3; row++)
+		{
+			bigRow = $("<div/>");
+			bigRow.addClass("tc-row-bg");
+
+			if (row % 2 == 1)
+			{
+				bigRow.addClass("tc-odd");
+			}
+			else
+			{
+				bigRow.addClass("tc-even");
+			}
+
+			for (i = 0; i < 4; i++)
+			{
+				moDiv = $("<div />");
+				moDiv.addClass("tc-cell");
+				moDiv.html(months_abbr[count]);
+				count++;
+				bigRow.append(moDiv);
+			}
+
+			view.append(bigRow);
+		}
+
+		setCalendarTitle(cal, (d.getYear() + 1900).toString());
+
+		return view
 	}
 
 	function renderDayView(cal, view, d)
