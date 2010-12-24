@@ -24,7 +24,9 @@
 				// Default options
 				var options = {
 					'month' : now.getMonth(),
-					'year' : now.getYear() + 1900
+					'year' : now.getYear() + 1900,
+					'transition' : 'slide',
+					'speed' : 300
 				};
 
 				// Merge in the user params
@@ -96,7 +98,34 @@
 
 	function showView(cal, view)
 	{
-		jQuery('.tc-body', cal).replaceWith(view);
+		var old_view = jQuery('.tc-body', cal);
+		var new_view = view;
+		var data = cal.data('thingerlyCalendar');
+
+		switch (data.options.transition)
+		{
+			case 'slide':
+			default: {
+				transitionSlide(cal, old_view, new_view);
+
+				break;
+			}
+		}
+	}
+
+	function transitionSlide(cal, orig, repl)
+	{
+		var data = cal.data('thingerlyCalendar');
+
+		repl.hide();
+
+		data.calendar.append(repl);
+
+		orig.hide('slide', { 'direction' : 'left' }, data.options.speed, function() {
+			orig.remove();
+		});
+
+		repl.show('slide', { 'direction' : 'right' }, data.options.speed);
 	}
 
 	function getView(cal, type, d)

@@ -9,6 +9,15 @@
 	background: transparent;
 }
 
+.tc-wrapper {
+	font-family: 'Tahoma';
+	font-size: 90%;
+	line-height: 14px;
+	width: 210px;
+	height: 210px;
+	position: relative;
+}
+
 .tc-header {
 	font-size: 90%;
 	text-align: center;
@@ -29,11 +38,11 @@
 	width: 80%;
 }
 
-.tc-wrapper {
-	font-family: 'Tahoma';
-	font-size: 90%;
-	line-height: 14px;
-	width: 210px;
+.tc-body {
+	width: 100%;
+	position: absolute;
+	left: 0px;
+	top: 20px;
 }
 
 .tc-row-sm {
