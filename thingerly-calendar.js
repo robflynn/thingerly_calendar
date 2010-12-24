@@ -16,7 +16,7 @@
 
 			return this.each(function()
 			{
-				$this = $(this);
+				var $this = $(this);
 
 				// Some Constants
 				var now = new Date();
@@ -33,7 +33,7 @@
 					$.extend(options, params);
 				}
 
-				data = $this.data('thingerlyCalendar');
+				var data = $this.data('thingerlyCalendar');
 
 				// If this is our first run on the element, set up some things
 				if (!data)
@@ -50,16 +50,54 @@
 						'calendar' : calendar,
 						'view' : 'days',
 						'options' : options,
-						'now' : now
+						'now' : now,
 					});
 
 					cdate = new Date(options.year, options.month, 1);
 					var view = getView($this, 'days', cdate);
 					jQuery('.tc-body', $this).replaceWith(view);
+
+					// Bind our buttons
+					jQuery(".tc-header-l", this).bind('click.thingerlyCalendar', function() {
+						data = $this.data('thingerlyCalendar');
+						var cm = data.options.month;
+						var cy = data.options.year;
+
+						var pm = cm == 0 ? 11 : cm - 1;
+						var py = pm == 11 ? cy - 1 : cy;
+
+						var new_view = getView($this, 'days', new Date(py, pm, 1));
+
+						data.options.month = pm;
+						data.options.year = py;
+
+						showView($this, new_view);
+					});
+
+					jQuery(".tc-header-r", this).bind('click.thingerlyCalendar', function() {
+						data = $this.data('thingerlyCalendar');
+						var cm = data.options.month;
+						var cy = data.options.year;
+
+						var nm = cm == 11 ? 0 : cm + 1;
+						var ny = nm == 0 ? cy + 1 : cy;
+
+						var new_view = getView($this, 'days', new Date(ny, nm, 1));
+
+						data.options.month = nm;
+						data.options.year = ny;
+
+						showView($this, new_view);
+					});
 				}
 			});
 		}
 	};
+
+	function showView(cal, view)
+	{
+		jQuery('.tc-body', cal).replaceWith(view);
+	}
 
 	function getView(cal, type, d)
 	{
@@ -168,7 +206,7 @@
 		}
 
 
-		setCalendarTitle(cal, months[d.getMonth()]);
+		setCalendarTitle(cal, months[d.getMonth()] + " - " + (d.getYear() + 1900));
 
 		return view;
 	}
