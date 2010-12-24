@@ -82,10 +82,12 @@
 						var data = $this.data('thingerlyCalendar');
 						var cdate = getPageDate('next', data);
 
-						var new_view = getView($this, data.view, cdate);
-
 						data.options.month = cdate.getMonth();
 						data.options.year = cdate.getYear() + 1900;
+
+						var new_view = getView($this, data.view, cdate);
+
+
 
 						showView($this, new_view);
 					});
@@ -249,7 +251,7 @@
 				moDiv.attr('mo-no', count);
 				moDiv.attr('y-no', d.getYear() + 1900);
 				moDiv.bind('click.thingerlyCalendar', function() {
-					selectMonth(cal, $(this).attr('mo-no'), $(this).attr('y-no'));
+					selectMonth(cal, parseInt($(this).attr('mo-no')), parseInt($(this).attr('y-no')));
 				});
 				count++;
 				bigRow.append(moDiv);
