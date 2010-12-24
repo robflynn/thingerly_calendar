@@ -244,7 +244,13 @@
 			{
 				moDiv = $("<div />");
 				moDiv.addClass("tc-cell");
+				moDiv.addClass("tc-month");
 				moDiv.html(months_abbr[count]);
+				moDiv.attr('mo-no', count);
+				moDiv.attr('y-no', d.getYear() + 1900);
+				moDiv.bind('click.thingerlyCalendar', function() {
+					selectMonth(cal, $(this).attr('mo-no'), $(this).attr('y-no'));
+				});
 				count++;
 				bigRow.append(moDiv);
 			}
@@ -255,6 +261,16 @@
 		setCalendarTitle(cal, (d.getYear() + 1900).toString());
 
 		return view
+	}
+
+	function selectMonth(cal, month, year)
+	{
+		view = getView(cal, 'days', new Date(year, month, 1));
+		var data = cal.data('thingerlyCalendar');
+		data.view = 'days';
+		data.options.year = year;
+		data.options.month = month;
+		showView(cal, view);
 	}
 
 	function renderDayView(cal, view, d)
