@@ -104,6 +104,10 @@
 
 		switch (data.options.transition)
 		{
+			case 'fade': {
+				transitionFade(cal, old_view, new_view);
+				break;
+			}
 			case 'slide':
 			default: {
 				transitionSlide(cal, old_view, new_view);
@@ -127,6 +131,20 @@
 
 		repl.show('slide', { 'direction' : 'right' }, data.options.speed);
 	}
+
+	function transitionFade(cal, orig, repl)
+	{
+		var data = cal.data('thingerlyCalendar');
+
+		repl.fadeTo(1, 0);
+
+		data.calendar.append(repl);
+
+		repl.fadeTo(data.options.speed, 1.0, function() {
+			orig.remove();
+		});
+	}
+
 
 	function getView(cal, type, d)
 	{
