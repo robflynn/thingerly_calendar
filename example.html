@@ -13,7 +13,10 @@
 				$("#example2").thingerlyCalendar({
 					'month' : 1,
 					'year' : 2011,
-					'transition' : 'fade'
+					'transition' : 'fade',
+					'dayClick' : function(day) {
+						alert('You clicked: ' + day);
+					}
 				});
 			});
 		</script>

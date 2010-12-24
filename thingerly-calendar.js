@@ -26,7 +26,10 @@
 					'month' : now.getMonth(),
 					'year' : now.getYear() + 1900,
 					'transition' : 'slide',
-					'speed' : 300
+					'speed' : 300,
+					'dayClick' : null,
+					'eventClick' : null,
+					'events' : []
 				};
 
 				// Merge in the user params
@@ -53,6 +56,7 @@
 						'view' : 'days',
 						'options' : options,
 						'now' : now,
+						'events' : options.events
 					});
 
 					cdate = new Date(options.year, options.month, 1);
@@ -202,6 +206,9 @@
 		prev_year = prev_month == 11 ? year - 1 : year;
 		prev_num_days = getNumDays(prev_month, prev_year);
 
+		next_month = month == 11 ? 0 : month + 1;
+		next_year = next_month == 0 ? year + 1 : year;
+
 		// Set up some counters
 		var day_counter = 0, last_month_days = 0, next_month_days = 0;
 
@@ -235,12 +242,16 @@
 					dayDiv.addClass("tc-grey");
 					dayText = prev_num_days - first_day + day_counter + 1;
 					last_month_days++;
+
+					dayDiv.attr('date', new Date(prev_year, prev_month, dayText));
 				}
 				else if (dayText > num_days)
 				{
 					// We're out of the current month and into the next
 					dayDiv.addClass("tc-grey");
 					dayText = ++next_month_days;
+
+					dayDiv.attr('date', new Date(next_year, next_month, dayText));
 				}
 				else
 				{
@@ -248,10 +259,18 @@
 					{
 						dayDiv.addClass("tc-today");
 					}
+
+					dayDiv.attr('date', new Date(year, month, dayText));
 				}
 
-
 				dayDiv.html(dayText);
+				dayDiv.bind('click.thingerlyCalendar', function(e) {
+					if (data.options.dayClick)
+					{
+						data.options.dayClick($(this).attr("date"));
+					}
+				});
+
 				weekDiv.append(dayDiv);
 
 				// increment our day counter
