@@ -123,7 +123,7 @@
 		for (week = 0; week < 6; week++)
 		{
 			weekDiv = $("<div />");
-			weekDiv.addClass("tc-week tc-row-sm");
+			weekDiv.addClass("tc-week tc-row-sm tc-cf");
 
 			if (week % 2 == 0)
 			{

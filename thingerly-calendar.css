@@ -1,0 +1,76 @@
+.tc-wrapper,
+.tc-wrapper * {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+
+.tc-header {
+	font-size: 90%;
+	text-align: center;
+}
+
+.tc-header-l {
+	float: left;
+	width: 10%;
+}
+
+.tc-header-r {
+	float: right;
+	width: 10%;
+}
+
+.tc-header-t {
+	float: left;
+	width: 80%;
+}
+
+.tc-wrapper {
+	font-family: 'Tahoma';
+	font-size: 90%;
+	line-height: 14px;
+	width: 210px;
+}
+
+.tc-row-sm {
+	height: 20px;
+	line-height: 20px;
+	vertical-align: middle;
+}
+
+.tc-row-sm.tc-odd {
+	background: #eee;
+}
+
+.tc-row-sm.tc-even {
+	background: #fff;
+}
+
+.tc-cell {
+	float: left;
+	text-align: center;
+	width: 14.2%;
+}
+
+.tc-day {
+	cursor: pointer;
+}
+
+.tc-grey {
+	color: #aaa;
+}
+
+
+.tc-cf:after 
+{
+	content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
