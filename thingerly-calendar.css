@@ -1,5 +1,5 @@
-.tc-wrapper,
-.tc-wrapper * {
+.tc-calendar,
+.tc-calendar * {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -119,6 +119,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 	color: #00f;
 }
 
+
+.tc-event {
+	font-weight: bold;
+	color: #f00;
+}
 
 .tc-cf:after 
 {

@@ -26,7 +26,7 @@
 				// Default options
 				var options = {
 					'month' : now.getMonth(),
-					'year' : now.getYear() + 1900,
+					'year' : now.getFullYear(),
 					'transition' : 'slide',
 					'speed' : 300,
 					'dayClick' : null,
@@ -48,9 +48,15 @@
 					var calendar = $('<div />');
 					calendar.addClass('tc-wrapper');
 
+					var outer = $('<div />');
+					outer.addClass("tc-calendar");
+
+					outer.append(calendar);
+
 					renderSkeleton(calendar);
 
-					$this.append(calendar);
+//					$this.append(calendar);
+$this.append(outer);
 
 					$(this).data('thingerlyCalendar', {
 						'target' : $this,
@@ -58,7 +64,7 @@
 						'view' : 'days',
 						'options' : options,
 						'now' : now,
-						'events' : options.events,
+						'events' : options.events
 					});
 
 					cdate = new Date(options.year, options.month, 1);
@@ -73,7 +79,7 @@
 						var new_view = getView($this, data.view, cdate);
 
 						data.options.month = cdate.getMonth();
-						data.options.year = cdate.getYear() + 1900;
+						data.options.year = cdate.getFullYear();
 
 						showView($this, new_view);
 					});
@@ -83,7 +89,7 @@
 						var cdate = getPageDate('next', data);
 
 						data.options.month = cdate.getMonth();
-						data.options.year = cdate.getYear() + 1900;
+						data.options.year = cdate.getFullYear();
 
 						var new_view = getView($this, data.view, cdate);
 
@@ -249,7 +255,7 @@
 				moDiv.addClass("tc-month");
 				moDiv.html(months_abbr[count]);
 				moDiv.attr('mo-no', count);
-				moDiv.attr('y-no', d.getYear() + 1900);
+				moDiv.attr('y-no', d.getFullYear());
 				moDiv.bind('click.thingerlyCalendar', function() {
 					selectMonth(cal, parseInt($(this).attr('mo-no')), parseInt($(this).attr('y-no')));
 				});
@@ -260,7 +266,7 @@
 			view.append(bigRow);
 		}
 
-		setCalendarTitle(cal, (d.getYear() + 1900).toString());
+		setCalendarTitle(cal, (d.getFullYear()).toString());
 
 		return view
 	}
@@ -298,7 +304,7 @@
 		// (We need last month's since we need to populate empty spaces
 		// on the calendar)
 		month = d.getMonth();
-		year = d.getYear() + 1900;
+		year = d.getFullYear();
 
 		// When did this month begin?
 		first_date = new Date(year, month, 1);
@@ -359,7 +365,7 @@
 				}
 				else
 				{
-					if (dayText == data.now.getDate() && d.getYear() == data.now.getYear() && d.getMonth() == data.now.getMonth())
+					if (dayText == data.now.getDate() && d.getFullYear() == data.now.getFullYear() && d.getMonth() == data.now.getMonth())
 					{
 						dayDiv.addClass("tc-today");
 					}
@@ -386,7 +392,7 @@
 		}
 
 
-		setCalendarTitle(cal, months[d.getMonth()] + " - " + (d.getYear() + 1900));
+		setCalendarTitle(cal, months[d.getMonth()] + " - " + (d.getFullYear()));
 
 		return view;
 	}
