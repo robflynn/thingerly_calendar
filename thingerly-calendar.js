@@ -54,8 +54,16 @@
 
 					renderSkeleton(calendar);
 
-//					$this.append(calendar);
-$this.append(outer);
+          $this.append(outer);
+
+          var parsedEvents = [];
+          for (i = 0; i < options.events.length; i++)
+          {
+              var evt = options.events[i];
+
+              var evtdate = new Date(Date.parse(evt));
+              parsedEvents[parsedEvents.length] = evtdate;
+          }
 
 					$(this).data('thingerlyCalendar', {
 						'target' : $this,
@@ -63,7 +71,7 @@ $this.append(outer);
 						'view' : 'days',
 						'options' : options,
 						'now' : now,
-						'events' : options.events
+						'events' : parsedEvents
 					});
 
 					cdate = new Date(options.year, options.month, 1);
@@ -372,14 +380,18 @@ $this.append(outer);
 					dayDiv.attr('date', new Date(year, month, dayText));
 				}
 
-				dayDiv.html(dayText);
-				dayDiv.bind('click.thingerlyCalendar', function(e) {
-					if (data.options.dayClick)
-					{
-						data.options.dayClick($(this).attr("date"));
-					}
-				});
+        var cDayDate = dayDiv.attr('date');
+        for (var _i = 0; _i < data.events.length; _i++)
+        {
+            if (cDayDate == data.events[_i])
+            {
+                dayDiv.addClass("tc-event");
+            }
+        }
 
+
+				dayDiv.html(dayText);
+				
 				weekDiv.append(dayDiv);
 
 				// increment our day counter
@@ -390,6 +402,19 @@ $this.append(outer);
 			view.append(weekDiv);
 		}
 
+    if (data.options.dayClick)
+    {
+        jQuery('.tc-day', view).bind('click.thingerlyCalendar', function() {
+    		    data.options.dayClick($(this).attr("date"));
+        });
+    }
+
+    if (data.options.eventClick)
+    {
+        jQuery('.tc-event', view).bind('click.thingerlyCalendar', function() {
+    		    data.options.eventClick($(this).attr("date"));
+        });
+    }
 
 		setCalendarTitle(cal, months[d.getMonth()] + " - " + (d.getFullYear()));
 
