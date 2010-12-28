@@ -287,7 +287,7 @@
 				moDiv.attr('mo-no', count);
 				moDiv.attr('y-no', d.getFullYear());
 				moDiv.bind('click.thingerlyCalendar', function() {
-					selectMonth(cal, parseInt($(this).attr('mo-no')), parseInt($(this).attr('y-no')));
+					selectMonth(cal, parseInt($(this).attr('mo-no'), 10), parseInt($(this).attr('y-no'), 10));
 				});
 				count++;
 				bigRow.append(moDiv);
