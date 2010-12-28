@@ -1,0 +1,24 @@
+ThingerlyCalendar is a jQuery plugin which enables the use of a small calendar widget on a website. 
+
+Basic Usage:
+    <script>
+      $(document).ready(function() {
+         $("#example").thingerlyCalendar();
+      });
+    </script>
+
+Advanced Example:
+    <script>
+      $(document).ready(function() {
+         $("#example2").thingerlyCalendar({
+             'transition' : 'fade',
+             'eventClick' : function(evt) { alert(evt); },
+             'events' : [
+                '12/25/2011',
+                '10/31/2011'
+              ],
+              'month' : 10,
+              'year' : 2011
+         });
+      });
+    </script>
