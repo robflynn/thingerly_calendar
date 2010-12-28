@@ -1,13 +1,12 @@
 (function($) {
-	// Class methods
-	
-	// TODO: i18n
-  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
-                'August', 'September', 'October', 'November', 'December'];
+  // Class methods
+  
+  // TODO: i18n
+ var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
+               'August', 'September', 'October', 'November', 'December'];
 
 	var months_abbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-
+  
   // TODO: Maybe make these changable later
   var days_of_week = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
   
@@ -404,7 +403,6 @@ $this.append(outer);
 		header.addClass("tc-header tc-row-sm tc-cf");
 
 		leftButton = $('<div />', {
-			'html' : '&laquo;'
 		});
 		leftButton.addClass("tc-header-l");
 
@@ -412,7 +410,6 @@ $this.append(outer);
 		middleButton.addClass("tc-header-t");
 
 		rightButton = $('<div />', {
-			'html' : '&raquo;'
 		});
 		rightButton.addClass("tc-header-r");
 

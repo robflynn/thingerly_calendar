@@ -46,16 +46,29 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 .tc-header-l {
 	float: left;
 	width: 10%;
+  height: 16px;
+  background-image: url('arrow-left.png');
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  margin-top: 2px;
+  cursor: pointer;
 }
 
 .tc-header-r {
 	float: right;
 	width: 10%;
+  background-image: url('arrow-right.png');
+  background-repeat: no-repeat;
+  height: 16px;
+  margin-right: 5px;
+  margin-top: 2px;
+  cursor: pointer;
 }
 
 .tc-header-t {
 	float: left;
-	width: 80%;
+	width: 75%;
+  cursor: pointer;
 }
 
 .tc-body {
