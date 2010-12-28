@@ -123,7 +123,30 @@
 					});
 				}
 			});
-		}
+		},
+    'addEvent': function(event_date)
+    {
+        var data = $(this).data('thingerlyCalendar');
+        data.events[data.events.length] = event_date;
+        p_event_date = new Date(Date.parse(event_date));
+
+        // TODO: This needs to be DRYed.
+        jQuery('.tc-day', data.calendar).each(function () {
+            if ($(this).attr('date') == p_event_date)
+            {
+                if (!$(this).hasClass("tc-event"))
+                {
+                    $(this).addClass("tc-event");
+                    if (data.options.eventClick)
+                    {
+                        $(this).bind('click.thingerlyCalendar', function() {
+                    		    data.options.eventClick($(this).attr("date"));
+                        });
+                    }
+                }
+            }
+        });
+    }
 	};
 
 	function getPageDate(direction, data)
