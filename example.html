@@ -28,19 +28,37 @@
 					}
           });
 
-        $('#example2').thingerlyCalendar('addEvent', '2/9/2011');
-
 			});
 		</script>
 
 	</head>
 
 	<body>
+		<pre>
+			$("#example").thingerlyCalendar();
+		</pre>
 		<div id="example">
 		</div>
 		<br />
 		<br />
 		<br />
+		<pre>
+$("#example2").thingerlyCalendar({
+	'month' : 1,
+	'year' : 2011,
+	'transition' : 'slide',
+	'viewTransition' : 'fade',
+	'events' : [
+		'12/31/2010',
+		'2/22/2011',
+		'4/10/1980'
+	],
+	'eventClick' : function(day) {
+		alert('You clicked: ' + day);
+	}
+});
+
+		</pre>
 		<div id="example2">
 		</div>
 	</body>
