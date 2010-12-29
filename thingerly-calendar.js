@@ -27,6 +27,7 @@
 					'month' : now.getMonth(),
 					'year' : now.getFullYear(),
 					'transition' : 'slide',
+					'viewTransition' : 'zoom',
 					'speed' : 300,
 					'dayClick' : null,
 					'eventClick' : null,
@@ -88,7 +89,7 @@
 						data.options.month = cdate.getMonth();
 						data.options.year = cdate.getFullYear();
 
-						showView($this, new_view);
+						showView($this, new_view, data.options.transition, 'prev');
 					});
 
 					jQuery(".tc-header-r", this).bind('click.thingerlyCalendar', function() {
@@ -102,7 +103,7 @@
 
 
 
-						showView($this, new_view);
+						showView($this, new_view, data.options.transition, 'next');
 					});
 
 					jQuery(".tc-header-t", this).bind('click.thingerlyCalendar', function() {
@@ -115,7 +116,7 @@
 
 								view = getView($this, 'months', new Date(data.options.year, data.options.month, 1));
 
-								showView($this, view);
+								showView($this, view, data.options.viewTransition, 'out');
 
 								break;
 							}
@@ -124,7 +125,7 @@
 
                 view = getView($this, 'years', new Date(data.options.year, data.options.month, 1));
 
-                showView($this, view);
+                showView($this, view, data.options.viewTransition, 'out');
 
                 break;
               }
@@ -201,28 +202,31 @@
 		}
 	}
 
-	function showView(cal, view)
+	function showView(cal, view, transType, direction)
 	{
 		var old_view = jQuery('.tc-body', cal);
 		var new_view = view;
-		var data = cal.data('thingerlyCalendar');
 
-		switch (data.options.transition)
+		switch (transType)
 		{
 			case 'fade': {
-				transitionFade(cal, old_view, new_view);
+				transitionFade(cal, old_view, new_view, direction);
+				break;
+			}
+			case 'zoom': {
+				transitionZoom(cal, old_view, new_view, direction);
 				break;
 			}
 			case 'slide':
 			default: {
-				transitionSlide(cal, old_view, new_view);
+				transitionSlide(cal, old_view, new_view, direction);
 
 				break;
 			}
 		}
 	}
 
-	function transitionSlide(cal, orig, repl)
+	function transitionSlide(cal, orig, repl, direction)
 	{
 		var data = cal.data('thingerlyCalendar');
 
@@ -230,14 +234,66 @@
 
 		data.calendar.append(repl);
 
-		orig.hide('slide', { 'direction' : 'left' }, data.options.speed, function() {
+		hdir = 'left';
+		sdir = 'right';
+
+		if (direction == 'prev' || direction == 'out')
+		{
+			hdir = 'right';
+			sdir = 'left';
+		}
+
+		orig.hide('slide', { 'direction' : hdir }, data.options.speed, function() {
 			orig.remove();
 		});
 
-		repl.show('slide', { 'direction' : 'right' }, data.options.speed);
+		repl.show('slide', { 'direction' : sdir }, data.options.speed);
 	}
 
-	function transitionFade(cal, orig, repl)
+	function transitionZoom(cal, orig, repl, direction)
+	{
+		var data = cal.data('thingerlyCalendar');
+
+
+		if (direction == 'prev' || direction == 'out')
+		{
+			per = 0;
+		orig.css("z-index", 5);
+		repl.css("z-index", 4);
+
+		data.calendar.append(repl);
+
+
+			orig.hide('scale', {percent: per},  data.options.speed, function() {
+				orig.remove();
+			});
+
+		}
+		else
+		{
+			per = 100;
+		orig.css("z-index", 4);
+		repl.css("z-index", 5);
+		repl.hide();
+
+		data.calendar.append(repl);
+
+
+			repl.show('scale', {percent: per},  data.options.speed, function() {
+				orig.remove();
+			});
+
+		}
+
+
+
+
+
+
+//		repl.show('scale', { 'direction' : 'right' }, data.options.speed);
+	}
+
+	function transitionFade(cal, orig, repl, direction)
 	{
 		var data = cal.data('thingerlyCalendar');
 
@@ -372,7 +428,7 @@
             data.view = 'months';
             data.options.year = year;
             var view = getView(cal, 'months', new Date(year, data.options.month, 1));
-            showView(cal, view);
+            showView(cal, view, data.options.viewTransition, 'in');
         }
 
 	function selectMonth(cal, month, year)
@@ -382,7 +438,7 @@
 		data.view = 'days';
 		data.options.year = year;
 		data.options.month = month;
-		showView(cal, view);
+		showView(cal, view, data.options.viewTransition, 'in');
 	}
 
 	function renderDayView(cal, view, d)
