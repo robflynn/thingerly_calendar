@@ -119,7 +119,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 	width: 25%;
 }
 
-.tc-day {
+.tc-day,
+.tc-month,
+.tc-year {
 	cursor: pointer;
 }
 

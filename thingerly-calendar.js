@@ -119,6 +119,15 @@
 
 								break;
 							}
+              case 'months' : {
+                data.view = 'years';
+
+                view = getView($this, 'years', new Date(data.options.year, data.options.month, 1));
+
+                showView($this, view);
+
+                break;
+              }
 						}
 					});
 				}
@@ -167,6 +176,10 @@
 			{
 				return new Date(cy-1, cm, 1);
 			}
+      else if (data.view == 'years')
+      {
+        return new Date(cy-12, cm, 1);
+      }
 		}
 		else if (direction = 'next')
 		{
@@ -181,6 +194,10 @@
 			{
 				return new Date(cy+1, cm, 1);
 			}
+      else if (data.view == 'years')
+      {
+        return new Date(cy+12, cm, 1);
+      }
 		}
 	}
 
@@ -248,6 +265,9 @@
 			case 'months': {
 				return renderMonthView(cal, view, d);
 			}
+      case 'years': {
+        return renderYearView(cal, view, d);
+      }
 			default: {
 				return renderDayView(cal, view, d);
 			}
@@ -257,6 +277,51 @@
 	function setCalendarTitle(cal, s)
 	{
 		jQuery('.tc-header-t', cal).html(s);
+	}
+
+	function renderYearView(cal, view, d)
+	{
+		var data = cal.data('thingerlyCalendar');
+
+    var curYear = d.getFullYear();
+    var startYear = curYear - 6;
+    var endYear = curYear + 5;
+    var year = startYear;
+
+		for (row = 0; row < 3; row++)
+		{
+			bigRow = $("<div/>");
+			bigRow.addClass("tc-row-bg");
+
+			if (row % 2 == 1)
+			{
+				bigRow.addClass("tc-odd");
+			}
+			else
+			{
+				bigRow.addClass("tc-even");
+			}
+
+			for (i = 0; i < 4; i++)
+			{
+				yDiv = $("<div />");
+				yDiv.addClass("tc-cell");
+				yDiv.addClass("tc-year");
+        yDiv.html(year);
+				yDiv.attr('y-no', year);
+				yDiv.bind('click.thingerlyCalendar', function() {
+                                    selectYear(cal, parseInt($(this).attr('y-no'), 10));
+				});
+        year++;
+				bigRow.append(yDiv);
+			}
+
+			view.append(bigRow);
+		}
+
+		setCalendarTitle(cal, startYear + " - " + endYear);
+
+		return view
 	}
 
 	function renderMonthView(cal, view, d)
@@ -300,6 +365,15 @@
 
 		return view
 	}
+
+        function selectYear(cal, year)
+        {
+            var data = cal.data('thingerlyCalendar'); 
+            data.view = 'months';
+            data.options.year = year;
+            var view = getView(cal, 'months', new Date(year, data.options.month, 1));
+            showView(cal, view);
+        }
 
 	function selectMonth(cal, month, year)
 	{
