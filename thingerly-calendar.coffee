@@ -41,8 +41,47 @@ $.fn.extend
 		# Merge our defaults with user provided parameters
 		options = $.extend options, params
 
+		initialize_calendar = (obj) ->			
+			$this = $(obj)
+
+			$data = $this.data 'thingerlyCalendar'
+
+			if not $data
+				# initial calendar wrapper
+
+				# render the calendar skeleton onto the calendar element
+				render_skeleton $this
+			
+		render_skeleton = ($ele) ->
+
+			template = """
+				<!-- calendar wrapper -->
+				<div class="tc-calendar">
+					<!-- main calendar -->
+					<div class="tc-wrapper">
+						<!-- begin header -->
+						<div class="tc-header tc-row-small tc-cf">
+							<div class="tc-header-left"></div>
+							<div class="tc-header-middle"></div>
+							<div class="tc-header-right"></div>
+						</div>
+						<!-- end header -->
+
+						<!-- begin body -->
+						<div class="tc-body tc-cf">
+
+						</div>
+						<!-- end body -->
+					</div>
+				</div>
+			"""
+
+			$ele.append template
+
+			
 		return @each () ->
-			console?.log "What???"
+			initialize_calendar this
+			
 
 
 
