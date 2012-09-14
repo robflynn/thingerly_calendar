@@ -23,7 +23,10 @@ THE SOFTWARE.
 $.fn.extend
 	thingerlyCalendar: (params) ->
 
+		# I need to i18n this
 		DAYS_OF_WEEK = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+		DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+		MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 		# Set up some defaults
 		now = new Date()
@@ -86,6 +89,8 @@ $.fn.extend
 			switch view_type
 				when 'days' then render_day_view($ele, $view, date)
 
+			$view
+
 		render_day_view = ($ele, $view, date) ->
 
 			$data = $ele.data("thingerlyCalendar")
@@ -99,6 +104,70 @@ $.fn.extend
 
 			$view.append $view_head
 
+			# Now we need to figure out how many days are in the month
+			# we are viewing, as well as how many were in last month.
+			# (We need last month's since we need to populate empty spaces
+			# on the calendar)
+			month = date.getMonth()
+			year = date.getFullYear()
+			first_day = date.getDay()
+
+			num_days = get_num_days month, year
+			day_counter = 0
+			last_month_days = 0
+			next_month_days = 0
+
+			# previous and next month
+			prev_month = if month == 0 then 11 else month - 1
+			prev_year = if prev_month == 1 then year - 1 else year			
+			prev_num_days = get_num_days prev_month, prev_year
+			
+			next_month = (month + 1) % 12;
+			next_year = if next_month == 0 then year + 1 else year
+
+			for week in [1..6]
+				week_template = """<div class="tc-week tc-row-small tc-cf">"""
+
+				# now render each day within the week
+				for day in [0...7]
+					grey_day = false
+					day_text = day_counter - last_month_days + 1;
+
+					if day_counter < first_day
+						grey_day = true
+						day_text = prev_num_days - first_day + day_counter + 1;
+						day_attr = new Date(prev_year, prev_month, day_text)
+						last_month_days++
+					else if day_text > num_days
+						# We passed the current month
+						grey_day = true
+						day_text = ++next_month_days
+						day_attr = new Date(next_year, next_month, day_text)
+					else
+						day_attr = new Date(year, month, day_text)
+
+
+					day_template = """<div class="tc-cell tc-day #{"tc-grey" if grey_day}" data-date="#{day_attr}">#{day_text}</div>"""
+
+					week_template += day_template
+
+					day_counter++
+
+				week_template = """#{week_template}</div>"""
+
+				$week_div = $(week_template)
+
+				# stripey
+				$week_div.addClass week % 2 == 0  ? "tc-even" : "tc-odd"
+
+				set_calendar_title $ele, "#{MONTHS[month]} - #{year}"
+
+				$view.append $week_div
+
+
+		set_calendar_title = ($ele, title) ->
+			console.log "HERE???"
+			$(".tc-header-title", $ele).html title
 
 		render_skeleton = ($ele) ->
 
@@ -110,7 +179,7 @@ $.fn.extend
 						<!-- begin header -->
 						<div class="tc-header tc-row-small tc-cf">
 							<div class="tc-header-left"></div>
-							<div class="tc-header-middle"></div>
+							<div class="tc-header-title"></div>
 							<div class="tc-header-right"></div>
 						</div>
 						<!-- end header -->
@@ -125,6 +194,13 @@ $.fn.extend
 			"""
 
 			$ele.append template
+
+		get_num_days = (month, year) ->
+			# 29 if it's a leap year and feburary
+			29 if ((month == 1) && (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)))
+
+			# otherwise we'll just use our lookup table
+			DAYS_IN_MONTH[month]
 
 			
 		return @each () ->

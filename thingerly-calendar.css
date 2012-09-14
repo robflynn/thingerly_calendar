@@ -43,7 +43,7 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7d7e7
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 ); /* ie */
 }
 
-.tc-header-l {
+.tc-header-left {
 	float: left;
 	width: 10%;
   height: 16px;
@@ -54,7 +54,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
   cursor: pointer;
 }
 
-.tc-header-r {
+.tc-header-right {
 	float: right;
 	width: 10%;
   background-image: url('arrow-right.png');
@@ -65,7 +65,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
   cursor: pointer;
 }
 
-.tc-header-t {
+.tc-header-title {
 	float: left;
 	width: 75%;
   cursor: pointer;
@@ -78,7 +78,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 	top: 26px;
 }
 
-.tc-row-sm {
+.tc-row-small {
 	height: 20px;
 	line-height: 20px;
 	vertical-align: middle;
@@ -86,7 +86,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 	padding-bottom: 3px;
 }
 
-.tc-row-bg {
+.tc-row-big {
 	height: 55px;
 	line-height: 55px;
 	vertical-align: middle;
@@ -95,17 +95,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 }
 
 
-.tc-row-sm.tc-odd,
+.tc-row-small.tc-odd,
 .tc-row-bg.tc-odd {
 	background: #eee;
 }
 
-.tc-row-sm.tc-even,
+.tc-row-small.tc-even,
 .tc-row-bg.tc-even {
 	background: #fff;
 }
 
-.tc-month-h {
+.tc-month-header {
 	padding-top: 3px;
 }
 
@@ -115,7 +115,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', end
 	width: 14.2%;
 }
 
-.tc-row-bg .tc-cell {
+.tc-row-big .tc-cell {
 	width: 25%;
 }
 
