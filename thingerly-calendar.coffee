@@ -203,12 +203,13 @@ $.fn.extend
 
 			$ele.append template
 
-		get_num_days = (month, year) ->
-			# 29 if it's a leap year and feburary
-			29 if ((month == 1) && (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)))
-
-			# otherwise we'll just use our lookup table
-			DAYS_IN_MONTH[month]
+		get_num_days = (month, year) ->		
+			if ((month == 1) && (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)))
+				# 29 if it's a leap year and feburary
+				29
+			else
+				# otherwise we'll just use our lookup table
+				DAYS_IN_MONTH[month]
 
 			
 		return @each () ->
