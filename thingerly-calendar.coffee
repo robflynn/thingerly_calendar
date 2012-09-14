@@ -37,6 +37,7 @@ $.fn.extend
 			onMonth : null              # a month is clicked
 			onYear  : null              # a year is clicked
 			onEvent : null              # a calendar event is clicked
+			view : 'days'               # what view should we start on?
 
 		# Merge our defaults with user provided parameters
 		options = $.extend options, params
@@ -50,8 +51,36 @@ $.fn.extend
 				# initial calendar wrapper
 
 				# render the calendar skeleton onto the calendar element
-				render_skeleton $this
-			
+				$obj = render_skeleton $this
+
+				# capture some useful dom elements
+				$calendar = $obj.find(".tc-wrapper")
+				$body = $obj.find(".tc-body")
+				$header = $obj.find(".tc-header")
+
+				# store various things that we may need to know into our data object
+				$this.data 'thingerlyCalendar'
+					target: $this
+					calendar: $calendar
+					view: options['view']
+					options : options
+					now: now
+					events : []									# We'll parse these later
+
+				current_date = new Date(options.year, options.month, 1)
+
+				# Get our initial view
+				view = get_view($this, options['view'], current_date)
+
+				# And show it
+				$(".tc-body", $this).replaceWith(view)
+
+		get_view = ($ele, view_type, date) ->
+			view = $("""
+					<div class="tc-body" >Sup</div>
+				""")
+
+
 		render_skeleton = ($ele) ->
 
 			template = """

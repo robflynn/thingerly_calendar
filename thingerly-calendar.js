@@ -27,7 +27,7 @@ THE SOFTWARE.
 
   $.fn.extend({
     thingerlyCalendar: function(params) {
-      var initialize_calendar, now, options, render_skeleton;
+      var get_view, initialize_calendar, now, options, render_skeleton;
       now = new Date();
       options = {
         month: now.getMonth(),
@@ -39,16 +39,35 @@ THE SOFTWARE.
         onDay: null,
         onMonth: null,
         onYear: null,
-        onEvent: null
+        onEvent: null,
+        view: 'days'
       };
       options = $.extend(options, params);
       initialize_calendar = function(obj) {
-        var $data, $this;
+        var $body, $calendar, $data, $header, $obj, $this, current_date, view;
         $this = $(obj);
         $data = $this.data('thingerlyCalendar');
         if (!$data) {
-          return render_skeleton($this);
+          $obj = render_skeleton($this);
+          $calendar = $obj.find(".tc-wrapper");
+          $body = $obj.find(".tc-body");
+          $header = $obj.find(".tc-header");
+          $this.data('thingerlyCalendar', {
+            target: $this,
+            calendar: $calendar,
+            view: options['view'],
+            options: options,
+            now: now,
+            events: []
+          });
+          current_date = new Date(options.year, options.month, 1);
+          view = get_view($this, options['view'], current_date);
+          return $(".tc-body", $this).replaceWith(view);
         }
+      };
+      get_view = function($ele, view_type, date) {
+        var view;
+        return view = $("<div class=\"tc-body\" >Sup</div>");
       };
       render_skeleton = function($ele) {
         var template;
