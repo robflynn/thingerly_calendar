@@ -23,6 +23,8 @@ THE SOFTWARE.
 $.fn.extend
 	thingerlyCalendar: (params) ->
 
+		DAYS_OF_WEEK = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+
 		# Set up some defaults
 		now = new Date()
 
@@ -76,9 +78,26 @@ $.fn.extend
 				$(".tc-body", $this).replaceWith(view)
 
 		get_view = ($ele, view_type, date) ->
-			view = $("""
-					<div class="tc-body" >Sup</div>
+			$view = $("""
+				<div class="tc-body">
+				</div>
 				""")
+
+			switch view_type
+				when 'days' then render_day_view($ele, $view, date)
+
+		render_day_view = ($ele, $view, date) ->
+
+			$data = $ele.data("thingerlyCalendar")
+
+			$view_head = $("""<div class="tc-month-header tc-row-small tc-cf"></div>""")
+
+			for day in DAYS_OF_WEEK
+				$day_div = $("""<div class="tc-cell tc-sub-header">#{day}</div>""")
+
+				$view_head.append $day_div
+
+			$view.append $view_head
 
 
 		render_skeleton = ($ele) ->
