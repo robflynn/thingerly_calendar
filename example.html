@@ -12,7 +12,9 @@
 		<script type="text/javascript">
 
 			$(document).ready(function () {
-				$("#example").thingerlyCalendar();
+				$("#example").thingerlyCalendar({
+					onDay : function(day) {}
+				});
 				$("#example2").thingerlyCalendar({
 					'month' : 1,
 					'year' : 2011,
@@ -23,6 +25,9 @@
               '2/22/2011',
               '4/10/1980'
           ],
+          'onDay' : function(daya) {
+
+          },
 					'eventClick' : function(day) {
 						alert('You clicked: ' + day);
 					}

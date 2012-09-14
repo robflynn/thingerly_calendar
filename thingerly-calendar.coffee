@@ -131,23 +131,25 @@ $.fn.extend
 				# now render each day within the week
 				for day in [0...7]
 					grey_day = false
-					day_text = day_counter - last_month_days + 1;
+					day_text = day_counter - last_month_days + 1;					
+					day_month = month
+					day_year = year
 
 					if day_counter < first_day
 						grey_day = true
 						day_text = prev_num_days - first_day + day_counter + 1;
-						day_attr = new Date(prev_year, prev_month, day_text)
+						day_year = prev_year
+						day_month = prev_month
+
 						last_month_days++
 					else if day_text > num_days
 						# We passed the current month
 						grey_day = true
 						day_text = ++next_month_days
-						day_attr = new Date(next_year, next_month, day_text)
-					else
-						day_attr = new Date(year, month, day_text)
+						day_year = next_year
+						day_month = next_month
 
-
-					day_template = """<div class="tc-cell tc-day #{"tc-grey" if grey_day}" data-date="#{day_attr}">#{day_text}</div>"""
+					day_template = """<div class="tc-cell tc-day #{if grey_day then "tc-grey" else ""}" data-day="#{day_text}" data-month="#{day_month + 1}" data-year="#{day_year}">#{day_text}</div>"""
 
 					week_template += day_template
 
@@ -159,14 +161,20 @@ $.fn.extend
 
 				# stripey
 				$week_div.addClass week % 2 == 0  ? "tc-even" : "tc-odd"
-
-				set_calendar_title $ele, "#{MONTHS[month]} - #{year}"
-
 				$view.append $week_div
 
+			set_calendar_title $ele, "#{MONTHS[month]} - #{year}"
+			console.log($data.options.onDay)
+
+			if $data.options.onDay
+				$(".tc-day", $view).bind 'click.thingerlyCalendar', ->
+					day = $(this).data("day")
+					month = $(this).data("month")
+					year = $(this).data("year")
+
+					console?.log "#{day} #{month} #{year}"
 
 		set_calendar_title = ($ele, title) ->
-			console.log "HERE???"
 			$(".tc-header-title", $ele).html title
 
 		render_skeleton = ($ele) ->
